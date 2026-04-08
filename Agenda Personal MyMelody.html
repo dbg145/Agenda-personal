@@ -2,231 +2,175 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>My Melody's Sweet Agenda 2026 🎀</title>
     <link rel="icon" href="https://img.icons8.com/fluency/48/pink-ribbon.png" type="image/png">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
+    <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/scroll-behaviour.min.js"></script>
+
     <style>
-        /* --- ESTILOS GENERALES (Estilo Mono/Cute) --- */
-        /* # Clarificación: Importamos una tipografía más suave y divertida */
         @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
         * { box-sizing: border-box; font-family: 'Varela Round', sans-serif; }
         
         body { 
             margin: 0; padding: 0; display: flex; height: 100vh; 
-            background-color: #fff0f5; /* Lavanda rosado muy claro */
-            color: #5d4037; /* Marrón suave para el texto, menos agresivo que el negro */
+            background-color: #fff0f5; 
+            color: #5d4037; 
         }
 
-        /* --- PANEL IZQUIERDO (Personalizado My Melody) --- */
         #panel-izquierdo {
             width: 320px;
             background-color: #ffffff;
             padding: 20px;
-            box-shadow: 3px 0 10px rgba(255, 182, 193, 0.3); /* Sombra rosa suave */
+            box-shadow: 3px 0 10px rgba(255, 182, 193, 0.3);
             display: flex;
             flex-direction: column;
-            z-index: 100; /* Subido para que los controles no queden debajo */
+            z-index: 100;
             border-right: 2px solid #ffc0cb;
         }
 
-        /* # Clarificación: Cabecera con foto de My Melody */
-        .header-melody {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        .header-melody img {
-            width: 80px;
-            height: auto;
-        }
+        .header-melody { text-align: center; margin-bottom: 15px; }
+        .header-melody img { width: 80px; height: auto; }
 
         h2.titulo-agenda { 
-            margin: 5px 0 15px 0; 
-            color: #ff69b4; /* Rosa fuerte */
-            font-size: 1.4rem; 
-            text-align: center;
-            text-shadow: 1px 1px 0px #fff, 2px 2px 0px #ffb6c1;
+            margin: 5px 0 15px 0; color: #ff69b4; font-size: 1.4rem; 
+            text-align: center; text-shadow: 1px 1px 0px #fff, 2px 2px 0px #ffb6c1;
         }
-        
         h3.subtitulo { font-size: 1rem; color: #ff8da1; margin-top: 20px; margin-bottom: 10px; text-align: center;}
 
-        /* # Clarificación: Estilos de los inputs más 'monos' */
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; margin-bottom: 4px; font-weight: bold; font-size: 0.85rem; color: #ff8da1; }
         .form-group input { 
-            width: 100%; padding: 10px; 
-            border: 2px solid #ffdae0; border-radius: 20px; /* Bordes muy redondeados */
-            background-color: #fffaf0; /* Blanco floral */
-            transition: 0.3s;
+            width: 100%; padding: 10px; border: 2px solid #ffdae0; border-radius: 20px; 
+            background-color: #fffaf0; transition: 0.3s;
         }
         .form-group input:focus { outline: none; border-color: #ff69b4; box-shadow: 0 0 5px rgba(255, 105, 180, 0.5); }
         .form-group input[type="color"] { padding: 2px; height: 40px; cursor: pointer; border-radius: 10px; }
 
-        /* # Clarificación: Botón Rosa */
         button.btn-crear { 
             background-color: #ff69b4; color: white; border: none; padding: 12px; 
             border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 1rem;
-            transition: 0.3s; width: 100%; margin-top: 5px;
-            box-shadow: 0 4px 0px #d81b60; /* Efecto 3D */
+            transition: 0.3s; width: 100%; margin-top: 5px; box-shadow: 0 4px 0px #d81b60;
         }
         button.btn-crear:hover { background-color: #ff8da1; transform: translateY(-2px); }
         button.btn-crear:active { transform: translateY(2px); box-shadow: 0 1px 0px #d81b60; }
 
-        /* # Clarificación: Zona de notas pendientes */
         #citas-pendientes {
-            margin-top: 15px;
-            flex: 1;
-            overflow-y: auto;
-            border: 3px dashed #ffb6c1;
-            padding: 10px;
-            border-radius: 15px;
-            background-color: #fffafa;
-            background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png'); /* Textura sutil */
+            margin-top: 15px; flex: 1; overflow-y: auto; border: 3px dashed #ffb6c1;
+            padding: 10px; border-radius: 15px; background-color: #fffafa;
+            background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png');
         }
 
-        /* --- ESTILO DE LAS NOTAS (Post-its Monos) --- */
         .cita {
-            padding: 12px;
-            margin-bottom: 12px;
-            border-radius: 15px; /* Más redondeado */
-            cursor: grab;
-            box-shadow: 2px 4px 8px rgba(216, 27, 96, 0.2);
-            color: #3e2723;
-            font-size: 0.9rem;
-            word-wrap: break-word;
-            border: 2px solid rgba(0,0,0,0.05);
-            position: relative;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex;
-            flex-direction: column;
-            min-height: 60px;
+            padding: 12px; margin-bottom: 12px; border-radius: 15px; cursor: grab;
+            box-shadow: 2px 4px 8px rgba(216, 27, 96, 0.2); color: #3e2723;
+            font-size: 0.9rem; word-wrap: break-word; border: 2px solid rgba(0,0,0,0.05);
+            position: relative; transition: transform 0.2s, box-shadow 0.2s;
+            display: flex; flex-direction: column; min-height: 60px;
+            touch-action: none; 
         }
         .cita:hover { transform: scale(1.02); box-shadow: 2px 6px 12px rgba(216, 27, 96, 0.3); }
         .cita:active { cursor: grabbing; }
         
-        /* # Clarificación: El texto editable */
         .cita span { outline: none; display: block; flex: 1; min-height: 20px; line-height: 1.3; }
         .cita span:focus { background-color: rgba(255,255,255,0.6); border-radius: 5px; }
+        .cita::after { content: '🎀'; position: absolute; top: -10px; right: -5px; font-size: 1.2rem; }
 
-        /* # Clarificación: Decoración de la nota (un pequeño lazo) */
-        .cita::after {
-            content: '🎀'; position: absolute; top: -10px; right: -5px; font-size: 1.2rem;
-        }
-
-        /* NUEVOS ESTILOS PARA ALARGAR NOTAS */
         .cita-controls {
-            display: none; /* Ocultos por defecto */
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.5);
-            border-radius: 10px;
-            margin-top: 5px;
-            padding: 2px;
+            display: none; align-items: center; justify-content: center; gap: 10px;
+            background: rgba(255,255,255,0.5); border-radius: 10px; margin-top: 5px; padding: 2px;
         }
-        /* Solo se ven cuando la nota está en una celda del calendario */
         .celda .cita-controls, #citas-pendientes .cita-controls { display: flex; }
-        
         .btn-size {
             background: white; border: 1px solid #ffb6c1; border-radius: 50%;
             width: 22px; height: 22px; cursor: pointer; font-size: 14px;
-            display: flex; align-items: center; justify-content: center; color: #ff69b4;
-            font-weight: bold;
+            display: flex; align-items: center; justify-content: center; color: #ff69b4; font-weight: bold;
         }
         .btn-size:hover { background: #ff69b4; color: white; }
 
-        /* --- NUEVO: SISTEMA DE ELIMINACIÓN (Papelera) --- */
+        /* --- PAPELERA --- */
         #zona-eliminar {
-            margin-top: 20px;
-            height: 80px;
-            border: 3px solid #ff8da1;
-            border-radius: 15px;
-            background-color: #ffebee;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #d81b60;
-            font-weight: bold;
-            font-size: 1.2rem;
-            transition: 0.3s;
+            margin-top: 20px; height: 80px; border: 3px solid #ff8da1; border-radius: 15px;
+            background-color: #ffebee; display: flex; align-items: center; justify-content: center;
+            color: #d81b60; font-weight: bold; font-size: 1.2rem; transition: 0.3s;
         }
-        #zona-eliminar.drag-over-delete {
-            background-color: #ffcdd2;
-            transform: scale(1.05);
-            border-color: #d81b60;
-        }
+        #zona-eliminar.drag-over-delete { background-color: #ffcdd2; transform: scale(1.05); border-color: #d81b60; }
         #zona-eliminar .icono-basura { font-size: 2.5rem; margin-right: 10px; }
 
-        /* --- PANEL DERECHO (Calendario) --- */
+        /* --- PANEL DERECHO --- */
         #panel-derecho { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
-
-        /* # Clarificación: Fondo sutil de My Melody para el calendario */
         #panel-derecho::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('https://i.imgur.com/8Q9N17x.png'); /* Imagen sutil de My Melody */
+            background-image: url('https://i.imgur.com/8Q9N17x.png'); 
             background-repeat: no-repeat; background-position: center; background-size: contain;
             opacity: 0.05; z-index: 0; pointer-events: none;
         }
 
-        /* # Clarificación: Cabecera del calendario (Rosa Pastel) */
         #calendario-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 25px;
-            background-color: #ffdae0;
-            border-bottom: 2px solid #ffb6c1;
-            z-index: 50;
+            display: flex; justify-content: space-between; align-items: center; padding: 15px 25px;
+            background-color: #ffdae0; border-bottom: 2px solid #ffb6c1; z-index: 50;
         }
         #mes-actual-label { color: #d81b60; font-size: 1.3rem; text-shadow: 1px 1px 0 #fff; }
-
-        /* # Clarificación: Botones de navegación redondos y rosas */
         .btn-nav {
             background-color: #ffffff; color: #ff69b4; border: 2px solid #ffb6c1; 
-            padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; 
-            transition: 0.3s; font-size: 1.1rem;
+            padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; font-size: 1.1rem;
         }
         .btn-nav:hover:not(:disabled) { background-color: #ff69b4; color: white; border-color: #ff69b4; }
         .btn-nav:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* --- GRID DEL CALENDARIO (Año completo) --- */
         #calendario-wrapper { flex: 1; overflow: auto; background-color: rgba(255, 255, 255, 0.7); z-index: 1; }
-        #calendario-grid {
-            display: grid; 
-            width: max-content; 
-        }
+        #calendario-grid { display: grid; width: max-content; }
 
         .celda-header {
             background-color: #fff0f5; color: #d81b60; font-weight: bold; text-align: center; 
             padding: 12px; border-right: 1px solid #ffdae0; border-bottom: 2px solid #ffb6c1;
             position: -webkit-sticky; position: sticky; top: 0; z-index: 40; font-size: 0.9rem;
         }
-        
         .celda-hora-header {
             background-color: #fff0f5; color: #ff8da1; font-weight: bold; text-align: center; 
             padding: 10px; border-right: 2px solid #ffb6c1; border-bottom: 1px solid #ffdae0;
             position: -webkit-sticky; position: sticky; left: 0; z-index: 30; width: 85px; font-size: 0.85rem;
             box-shadow: 3px 0 8px rgba(255, 182, 193, 0.4);
         }
-        
         .celda-vacia {
             position: -webkit-sticky; position: sticky; top: 0; left: 0; z-index: 50; background-color: #ffdae0;
             border-right: 2px solid #ffb6c1; border-bottom: 2px solid #ffb6c1;
         }
-
         .celda {
-            border-right: 1px solid #ffeaed;
-            border-bottom: 1px solid #ffeaed;
-            width: 130px; height: 80px; /* Altura fija para que el cálculo de expansión sea exacto */
-            padding: 5px; background-color: rgba(255, 255, 255, 0.5);
-            transition: 0.2s;
-            position: relative; /* Necesario para que la nota flote correctamente */
+            border-right: 1px solid #ffeaed; border-bottom: 1px solid #ffeaed; width: 130px; height: 80px; 
+            padding: 5px; background-color: rgba(255, 255, 255, 0.5); transition: 0.2s; position: relative;
         }
         .celda.drag-over { background-color: #ffebee; border: 2px dashed #ff69b4; }
         
-        /* # Clarificación: Scrollbar rosa y mono */
         ::-webkit-scrollbar { width: 10px; height: 10px; }
         ::-webkit-scrollbar-track { background: #fff0f5; }
         ::-webkit-scrollbar-thumb { background: #ffb6c1; border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: #ff69b4; }
+
+        @media (max-width: 800px) {
+            body { 
+                flex-direction: column;
+            }
+            #panel-izquierdo { 
+                width: 100%; 
+                height: 45vh;
+                border-right: none; 
+                border-bottom: 3px solid #ffb6c1; 
+                overflow-y: auto;
+                padding: 10px;
+            }
+            #panel-derecho {
+                height: 55vh;
+            }
+            .header-melody img { width: 50px; }
+            #zona-eliminar { height: 60px; margin-top: 10px; }
+            .celda { width: 100px; height: 70px; }
+            #calendario-header { padding: 10px; }
+            .btn-nav { font-size: 0.9rem; padding: 5px 10px; }
+            h2.titulo-agenda { font-size: 1.2rem; margin-bottom: 5px; }
+        }
     </style>
 </head>
 <body>
@@ -243,15 +187,15 @@
         </div>
         <div class="form-group">
             <label for="color">Elige un color cuqui:</label>
-            <input type="color" id="color" value="#ffb6c1"> </div>
+            <input type="color" id="color" value="#ffb6c1"> 
+        </div>
         <button class="btn-crear" onclick="crearNota()">¡Añadir Nota! 🌸</button>
 
         <h3 class="subtitulo">Notas por colocar 🎀</h3>
-        <div id="citas-pendientes" ondrop="soltar(event)" ondragover="permitirSoltar(event)">
-            </div>
+        <div id="citas-pendientes" ondrop="soltar(event)" ondragover="permitirSoltar(event)"></div>
 
         <div id="zona-eliminar" ondrop="soltarEliminar(event)" ondragover="permitirSoltarEliminar(event)" ondragenter="resaltarEliminar(event)" ondragleave="quitarResaltadoEliminar(event)">
-            <span class="icono-basura">🗑️</span> Suelta aquí para borrar
+            <span class="icono-basura">🗑️</span> Suelta para borrar
         </div>
     </div>
 
@@ -262,23 +206,24 @@
             <button id="btn-next" class="btn-nav" onclick="cambiarMes(1)">Siguiente 🎀</button>
         </div>
         <div id="calendario-wrapper">
-            <div id="calendario-grid">
-                </div>
+            <div id="calendario-grid"></div>
         </div>
     </div>
 
     <script>
-        /* --- CONFIGURACIÓN AÑO COMPLETO 2026 --- */
+
+        MobileDragDrop.polyfill({
+            dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
+        });
+
+        window.addEventListener('touchmove', function() {}, {passive: false});
+
         const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
         const diasPorMes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; 
         
         const mesesPermitidos = [];
         for (let i = 0; i < 12; i++) {
-            mesesPermitidos.push({
-                id: i,
-                nombre: `${nombresMeses[i]} 2026`,
-                dias: diasPorMes[i]
-            });
+            mesesPermitidos.push({ id: i, nombre: `${nombresMeses[i]} 2026`, dias: diasPorMes[i] });
         }
 
         let indiceMesActual = 0;
@@ -291,24 +236,16 @@
             actualizarBotones();
         });
 
-        /* --- LÓGICA DE PERSISTENCIA --- */
-        function guardarDatos() {
-            localStorage.setItem('melody_agenda_v2', JSON.stringify(citas)); 
-        }
-
+        function guardarDatos() { localStorage.setItem('melody_agenda_v2', JSON.stringify(citas)); }
         function cargarDatos() {
             const datosGuardados = localStorage.getItem('melody_agenda_v2');
-            if (datosGuardados) {
-                citas = JSON.parse(datosGuardados);
-            }
+            if (datosGuardados) citas = JSON.parse(datosGuardados);
         }
 
-        /* --- LÓGICA DEL CALENDARIO --- */
         function cambiarMes(direccion) {
             indiceMesActual += direccion;
             if (indiceMesActual < 0) indiceMesActual = 0;
             if (indiceMesActual > 11) indiceMesActual = 11;
-            
             actualizarBotones();
             renderizarCalendario();
             renderizarCitas();
@@ -326,8 +263,10 @@
 
             const configMes = mesesPermitidos[indiceMesActual];
             const numDias = configMes.dias;
+            // Detectar si es móvil para hacer las celdas un poco más pequeñas
+            const celdaWidth = window.innerWidth <= 800 ? 100 : 130;
 
-            grid.style.gridTemplateColumns = `85px repeat(${numDias}, 130px)`;
+            grid.style.gridTemplateColumns = `85px repeat(${numDias}, ${celdaWidth}px)`;
 
             const celdaVacia = document.createElement('div');
             celdaVacia.className = 'celda-vacia';
@@ -342,7 +281,6 @@
 
             for (let h = 0; h < 24; h++) {
                 const horaStr = h.toString().padStart(2, '0') + ':00';
-                
                 const celdaHora = document.createElement('div');
                 celdaHora.className = 'celda-hora-header';
                 celdaHora.innerText = horaStr;
@@ -354,104 +292,75 @@
                     celda.dataset.mes = configMes.id;
                     celda.dataset.dia = d;
                     celda.dataset.hora = h;
-                    
                     celda.ondragover = permitirSoltar;
                     celda.ondrop = soltar;
                     celda.ondragenter = (e) => celda.classList.add('drag-over');
                     celda.ondragleave = (e) => celda.classList.remove('drag-over');
-
                     grid.appendChild(celda);
                 }
             }
         }
 
-        /* --- GESTIÓN DE NOTAS --- */
         function crearNota() {
             const titulo = document.getElementById('titulo-nota').value.trim();
             const color = document.getElementById('color').value;
 
-            if (!titulo) {
-                alert('¡Escribe algo lindo en la nota primero! 🌸');
-                return;
-            }
+            if (!titulo) return alert('¡Escribe algo lindo en la nota primero! 🌸');
 
             const nuevaNota = {
-                id: 'nota-' + Date.now(),
-                texto: titulo,
-                color: color,
-                mes: null,
-                dia: null,
-                hora: null,
-                duracion: 1 // # Clarificación: Añadimos duración por defecto (1 hora)
+                id: 'nota-' + Date.now(), texto: titulo, color: color,
+                mes: null, dia: null, hora: null, duracion: 1 
             };
 
             citas.push(nuevaNota);
-            guardarDatos();
-            renderizarCitas();
+            guardarDatos(); renderizarCitas();
             document.getElementById('titulo-nota').value = '';
         }
 
-        /* # Clarificación: NUEVA FUNCIÓN PARA DUPLICAR NOTAS */
         window.duplicarNota = function(id) {
             const original = citas.find(c => c.id === id);
             if (!original) return;
-            
-            // Creamos una copia exacta pero con nuevo ID y sin posición (va a pendientes)
             const copia = {
-                ...original,
-                id: 'nota-' + Date.now() + Math.floor(Math.random() * 1000),
-                mes: null,
-                dia: null,
-                hora: null
+                ...original, id: 'nota-' + Date.now() + Math.floor(Math.random() * 1000),
+                mes: null, dia: null, hora: null
             };
-            
             citas.push(copia);
-            guardarDatos();
-            renderizarCitas();
+            guardarDatos(); renderizarCitas();
         }
 
-        // # Clarificación: Nueva función para cambiar el tamaño de la nota
         window.cambiarDuracion = function(id, delta) {
             const cita = citas.find(c => c.id === id);
             if (cita) {
                 cita.duracion = Math.max(1, (cita.duracion || 1) + delta);
-                guardarDatos();
-                renderizarCitas();
+                guardarDatos(); renderizarCitas();
             }
         }
 
         function renderizarCitas() {
             document.getElementById('citas-pendientes').innerHTML = '';
             document.querySelectorAll('.celda').forEach(celda => celda.innerHTML = '');
+            const celdaHeight = window.innerWidth <= 800 ? 70 : 80;
 
             citas.forEach(cita => {
                 const el = document.createElement('div');
-                el.className = 'cita';
-                el.id = cita.id;
-                el.style.backgroundColor = cita.color;
-                el.draggable = true;
-                el.ondragstart = arrastrar;
+                el.className = 'cita'; el.id = cita.id; el.style.backgroundColor = cita.color;
+                el.draggable = true; el.ondragstart = arrastrar;
 
-                // Si está en el calendario, calculamos su altura según la duración
                 if (cita.mes !== null) {
-                    // Cada celda mide 80px. Calculamos altura y subimos el z-index para que flote sobre las de abajo
-                    el.style.height = ((cita.duracion || 1) * 80 - 10) + "px";
-                    el.style.zIndex = "20";
-                    el.style.position = "absolute";
-                    el.style.width = "calc(100% - 10px)";
+                    el.style.height = ((cita.duracion || 1) * celdaHeight - 10) + "px";
+                    el.style.zIndex = "20"; el.style.position = "absolute"; el.style.width = "calc(100% - 10px)";
                 }
 
                 const textoSpan = document.createElement('span');
-                textoSpan.contentEditable = true;
-                textoSpan.innerText = cita.texto;
-                textoSpan.onblur = function() {
-                    cita.texto = this.innerText;
-                    guardarDatos();
-                };
+                textoSpan.contentEditable = true; textoSpan.innerText = cita.texto;
+                textoSpan.onblur = function() { cita.texto = this.innerText; guardarDatos(); };
+                
+                // Modificación para móviles: evitar que se abra el teclado al arrastrar
                 textoSpan.onmousedown = (e) => e.stopPropagation();
+                textoSpan.ontouchstart = (e) => e.stopPropagation(); 
+                
                 el.appendChild(textoSpan);
 
-                // # Clarificación: Añadimos los botones de control de tamaño
                 const controls = document.createElement('div');
                 controls.className = 'cita-controls';
                 controls.innerHTML = `
@@ -465,40 +374,23 @@
                 if (cita.mes !== null && cita.dia !== null && cita.hora !== null) {
                     if (cita.mes === mesesPermitidos[indiceMesActual].id) {
                         const celdaDestino = document.querySelector(`.celda[data-dia="${cita.dia}"][data-hora="${cita.hora}"]`);
-                        if (celdaDestino) {
-                            celdaDestino.appendChild(el);
-                        }
+                        if (celdaDestino) celdaDestino.appendChild(el);
                     }
                 } else {
-                    el.style.height = "auto"; // En pendientes que tenga su tamaño normal
-                    el.style.position = "relative";
-                    el.style.width = "auto";
+                    el.style.height = "auto"; el.style.position = "relative"; el.style.width = "auto";
                     document.getElementById('citas-pendientes').appendChild(el);
                 }
             });
         }
 
-        /* --- SISTEMA DE ARRASTRE GENERAL --- */
         function permitirSoltar(e) { e.preventDefault(); }
-
-        function arrastrar(e) {
-            e.dataTransfer.setData('text/plain', e.target.id);
-            setTimeout(() => e.target.style.opacity = '0.5', 0);
-        }
-        
-        document.addEventListener('dragend', (e) => {
-            if (e.target.classList.contains('cita')) {
-                e.target.style.opacity = '1';
-            }
-        });
+        function arrastrar(e) { e.dataTransfer.setData('text/plain', e.target.id); setTimeout(() => e.target.style.opacity = '0.5', 0); }
+        document.addEventListener('dragend', (e) => { if (e.target.classList.contains('cita')) e.target.style.opacity = '1'; });
 
         function soltar(e) {
             e.preventDefault();
             const idCita = e.dataTransfer.getData('text/plain');
-            
-            if (e.currentTarget.classList.contains('celda')) {
-                e.currentTarget.classList.remove('drag-over');
-            }
+            if (e.currentTarget.classList.contains('celda')) e.currentTarget.classList.remove('drag-over');
 
             const citaObj = citas.find(c => c.id === idCita);
             if (!citaObj) return;
@@ -511,28 +403,29 @@
                 citaObj.dia = parseInt(e.currentTarget.dataset.dia);
                 citaObj.hora = parseInt(e.currentTarget.dataset.hora);
             }
-
-            guardarDatos();
-            renderizarCitas();
+            guardarDatos(); renderizarCitas();
         }
 
-        /* --- LÓGICA DE ELIMINACIÓN (PAPELERA) --- */
         function permitirSoltarEliminar(e) { e.preventDefault(); }
         function resaltarEliminar(e) { e.preventDefault(); document.getElementById('zona-eliminar').classList.add('drag-over-delete'); }
         function quitarResaltadoEliminar(e) { document.getElementById('zona-eliminar').classList.remove('drag-over-delete'); }
 
         function soltarEliminar(e) {
             e.preventDefault();
-            quitarResaltadoEliminar();
             const idCita = e.dataTransfer.getData('text/plain');
+            quitarResaltadoEliminar();
 
+            if (!idCita) return;
             const confirmar = confirm("¿Estás segura de que quieres borrar esta nota? 😿");
             if (confirmar) {
                 citas = citas.filter(c => c.id !== idCita);
-                guardarDatos();
-                renderizarCitas();
+                guardarDatos(); renderizarCitas();
             }
         }
+        
+        window.addEventListener('resize', () => {
+            renderizarCalendario(); renderizarCitas();
+        });
     </script>
 </body>
 </html>
